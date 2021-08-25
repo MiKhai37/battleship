@@ -1,3 +1,6 @@
+import  './style.css';
+import { ship } from './modules/Ship'
+
 function component() {
   const element = document.createElement('div');
 
