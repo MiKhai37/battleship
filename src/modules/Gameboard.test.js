@@ -32,21 +32,22 @@ test('place ship out of range v', () => {
 test('ship coordinates h', () => {
   const gb = gameBoard();
   gb.placeh(3, 3, 3);
-  expect(gb.shipsCoord[0]).toEqual([[3, 3], [4, 3], [5, 3]]);
+  expect(gb.shipPositions[0]).toEqual([[3, 3], [4, 3], [5, 3]]);
 });
 
 test('ship coordinates v', () => {
   const gb = gameBoard();
   gb.placev(3, 3, 3);
-  expect(gb.shipsCoord[0]).toEqual([[3, 3], [3, 4], [3, 5]]);
+  expect(gb.shipPositions[0]).toEqual([[3, 3], [3, 4], [3, 5]]);
 });
 
 test('ships coordinates 2 ships', () =>{
   const gb = gameBoard()
   gb.placeh(3, 3, 3);
   gb.placeh(4, 5, 4);
-  expect(gb.shipsCoord[0]).toEqual([[3, 3], [4, 3], [5, 3]]);
-  expect(gb.shipsCoord[1]).toEqual([[5, 4], [6, 4], [7, 4], [8, 4]]);
+  expect(gb.shipPositions[0]).toEqual([[3, 3], [4, 3], [5, 3]]);
+  expect(gb.shipPositions[1]).toEqual([[5, 4], [6, 4], [7, 4], [8, 4]]);
+  expect(gb.shipPositions).toEqual([[[3, 3], [4, 3], [5, 3]], [[5, 4], [6, 4], [7, 4], [8, 4]]])
 });
 
 test('avoid superposition of ship', () => {
@@ -76,21 +77,40 @@ test('receive missed attack', () => {
 test('which ship is here?', () => {
   const gb = gameBoard();
   gb.placeh(3, 3, 3);
-  gb.placeh(4, 3, 5);
-  expect(gb.whichShip(4, 5)).toBe(1);
-  expect(gb.whichShip(3, 3)).toBe(0);
+  gb.placeh(4, 5, 4);
+  gb.placev(2, 1, 2)
+  expect(gb.whichShip(4, 3)).toBe(0);
+  expect(gb.whichShip(5, 4)).toBe(1);
+  expect(gb.whichShip(1, 3)).toBe(2);
+  expect(gb.whichShip(4, 4)).toBe('no ship here');
 });
 
-xtest('which ship is here? no ship', () => {
-  const gb = gameBoard();
-  gb.placeh(3, 3, 3);
-  gb.placeh(4, 3, 5);
-  expect(gb.whichShip(1, 1)).toBe('no ship here');
-});
-
-xtest('receive attack hit', () => {
+test('receive attack hit', () => {
   const gb = gameBoard();
   gb.placeh(4, 4 ,2);
   gb.receiveAttack(5, 2);
   expect(gb.ships[0].hitArr).toEqual([0, 1, 0, 0]);
+});
+
+test('all ships down', () => {
+  const gb = gameBoard();
+  gb.placeh(3, 4, 2);
+  gb.placev(2, 1, 1);
+  gb.ships[0].hit(0);
+  gb.ships[0].hit(1);
+  gb.ships[0].hit(2);
+  gb.ships[1].hit(0);
+  gb.ships[1].hit(1);
+  expect(gb.isAllDown()).toBe(true)
+});
+
+test('all ships down', () => {
+  const gb = gameBoard();
+  gb.placeh(3, 4, 2);
+  gb.placev(2, 1, 1);
+  gb.ships[0].hit(0);
+  gb.ships[0].hit(2);
+  gb.ships[1].hit(0);
+  gb.ships[1].hit(1);
+  expect(gb.isAllDown()).toBe(false)
 });
