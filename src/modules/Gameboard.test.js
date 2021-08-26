@@ -71,7 +71,7 @@ test('receive missed attack', () => {
   const length = 4;
   gb.placeh(length, xShip ,yShip);
   gb.receiveAttack(xAttack, yAttack);
-  expect(gb.missedMatrix[xAttack][yAttack]).toBe(1);
+  expect(gb.hitMatrix[xAttack][yAttack]).toBe(1);
 });
 
 test('which ship is here?', () => {

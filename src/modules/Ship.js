@@ -1,5 +1,4 @@
-const ship = (length, x, y) => {
-  //const length = length;
+const ship = (length) => {
   const hitArr = new Array(length).fill(0); //Hit: 1, Not Hit:0
   const hit = (index) => hitArr[index] = 1;
   const isSunk = () => {

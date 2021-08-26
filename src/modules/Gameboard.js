@@ -6,9 +6,9 @@ const gameBoard = () => {
     matrix[i] = new Array(10).fill(0);
   };
 
-  const missedMatrix = []
+  const hitMatrix = []
   for(let i = 0; i < 9; i++) {
-    missedMatrix[i] = new Array(10).fill(0);
+    hitMatrix[i] = new Array(10).fill(0);
   };
 
   const ships = [];
@@ -85,7 +85,8 @@ const gameBoard = () => {
   };
 
   const receiveAttack = (x, y) => {
-    if (matrix[x][y] === 0) missedMatrix[x][y] = 1;
+    hitMatrix[x][y] = 1;
+    if (matrix[x][y] === 0) return;
     if (matrix[x][y] === 1) {
       const shipIndex = whichShip(x, y);
       const hitShip = ships[shipIndex];
@@ -104,7 +105,7 @@ const gameBoard = () => {
     return false;
   }
 
-  return { matrix, missedMatrix, whichShip, ships, shipPositions, placeh, placev, receiveAttack, isAllDown }
+  return { matrix, hitMatrix, whichShip, ships, shipPositions, placeh, placev, receiveAttack, isAllDown }
 }
 
 module.exports = gameBoard;
