@@ -70,6 +70,7 @@ test('receive missed attack', () => {
   const length = 4;
   gb.placeh(length, xShip ,yShip);
   gb.receiveAttack(xAttack, yAttack);
+  expect(gb.whichShip(xAttack, yAttack)).toBe(-1);
   expect(gb.hitMatrix[xAttack][yAttack]).toBe(1);
 });
 
@@ -77,7 +78,7 @@ test('which ship is here?', () => {
   const gb = gameBoard();
   gb.placeh(3, 3, 3);
   gb.placeh(4, 5, 4);
-  gb.placev(2, 1, 2)
+  gb.placev(2, 1, 2);
   expect(gb.whichShip(4, 3)).toBe(0);
   expect(gb.whichShip(5, 4)).toBe(1);
   expect(gb.whichShip(1, 3)).toBe(2);
@@ -89,6 +90,12 @@ test('receive attack hit', () => {
   gb.placeh(4, 4 ,2);
   gb.receiveAttack(5, 2);
   expect(gb.ships[0].hitArr).toEqual([0, 1, 0, 0]);
+});
+
+test('Already hit', () => {
+  const gb = gameBoard();
+  gb.receiveAttack(5, 2);
+  expect(gb.receiveAttack(5, 2)).toBe('Already hit');
 });
 
 test('all ships down', () => {
@@ -103,7 +110,7 @@ test('all ships down', () => {
   expect(gb.isAllDown()).toBe(true)
 });
 
-test('all ships down', () => {
+test('all ships not down', () => {
   const gb = gameBoard();
   gb.placeh(3, 4, 2);
   gb.placev(2, 1, 1);

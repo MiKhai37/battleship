@@ -31,8 +31,9 @@ const UI = () => {
       for (let j = 0; j < player.gb.size; j++) {
         const gbItem = document.createElement('div');
         gbItem.classList.add('grid-item');
-        gbItem.dataset.x = i;
-        gbItem.dataset.y = j;
+        gbItem.classList.add(player.name);
+        gbItem.dataset.x = j;
+        gbItem.dataset.y = i;
         gbItem.dataset.name = player.name;
         gbItem.textContent = 'A';
         gbContainer.appendChild(gbItem);
@@ -41,7 +42,14 @@ const UI = () => {
     return gbContainer;
   };
 
-  const renderShip = (player) => {
+  const renderSeparator = () => {
+    const separator = document.createElement('div');
+    separator.classList.add('separator');
+
+    return separator;
+  };
+
+  const renderShip = (player, computer) => {
     const gridItems = document.querySelectorAll('.grid-item');
 
     gridItems.forEach(gridItem => {
@@ -50,45 +58,50 @@ const UI = () => {
       const shipID = player.gb.whichShip(x, y);
 
       if (shipID > -1) {
-        console.log('ship');
         gridItem.classList.add('ship');
       };
     });
   };
 
-  const renderSunkShip = (player) => {
-    const gridItems = document.querySelectorAll('.grid-item');
-
-    gridItems.forEach(gridItem => {
-      const x = parseInt(gridItem.dataset.x);
-      const y = parseInt(gridItem.dataset.y);
-      const shipID = player.gb.whichShip(x, y);
-
-      if (player.gb.ships[shipID].isSunk()) {
-        gridItem.classList.add('sunk');
-      };
-    });
-  };
-
   const renderUI = (player, computer) => {
+
+    const main = document.createElement('div');
+    main.classList.add('main');
+
     const header = renderHeader();
     const flexContainer = renderFlexContainer()
     const plGB = renderGB(player);
     const cpGB = renderGB(computer);
+    const separator = renderSeparator();
+    separator.textContent = 'Player Turn';
+
     flexContainer.appendChild(plGB);
+    flexContainer.appendChild(separator);
     flexContainer.appendChild(cpGB);
 
     const footer = renderFooter();
-    document.body.appendChild(header);
-    document.body.appendChild(flexContainer);
-    document.body.appendChild(footer);
+    main.appendChild(header);
+    main.appendChild(flexContainer);
+    main.appendChild(footer);
+
+    document.body.appendChild(main);
 
     renderShip(player);
     renderShip(computer);
+
+    return main;
+  };
+
+  const refreshUI = (player, computer) => {
+    const exMain = document.querySelector('.main');
+
+    const main = renderUI(player, computer);
+
+    document.body.replaceChild(main, exMain);
   };
 
 
-  return { renderHeader, renderFooter, renderGB, renderUI, renderShip };
+  return { renderUI, refreshUI, renderShip };
 };
 
 module.exports = UI;

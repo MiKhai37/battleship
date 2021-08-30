@@ -86,12 +86,13 @@ const gameBoard = (size = 10) => {
   };
 
   const receiveAttack = (x, y) => {
+    if (hitMatrix[x][y] == 1) return 'Already hit'
     hitMatrix[x][y] = 1;
-    if (matrix[x][y] === 0) return;
+    if (matrix[x][y] === 0) return 'Nothing here';
     if (matrix[x][y] === 1) {
-      const shipIndex = whichShip(x, y);
-      const hitShip = ships[shipIndex];
-      const hitShipIndex = whichIndex(x, y, shipIndex);
+      const shipID = whichShip(x, y);
+      const hitShip = ships[shipID];
+      const hitShipIndex = whichIndex(x, y, shipID);
       hitShip.hit(hitShipIndex);
     };
   };
