@@ -120,3 +120,11 @@ test('all ships not down', () => {
   gb.ships[1].hit(1);
   expect(gb.isAllDown()).toBe(false)
 });
+
+test('ship placement with direction', () => {
+  const gb = gameBoard();
+  gb.place(4, 4, 4, 'h');
+  gb.place(4, 4, 5, 'v');
+  expect([gb.matrix[4][4], gb.matrix[5][4], gb.matrix[6][4], gb.matrix[7][4]]).toEqual([1, 1, 1, 1])
+  expect([gb.matrix[4][5], gb.matrix[4][6], gb.matrix[4][7], gb.matrix[4][8]]).toEqual([1, 1, 1, 1])
+});

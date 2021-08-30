@@ -49,8 +49,8 @@ const UI = () => {
     return separator;
   };
 
-  const renderShip = (player, computer) => {
-    const gridItems = document.querySelectorAll('.grid-item');
+  const renderShip = (player) => {
+    const gridItems = document.querySelectorAll(`.grid-item.${player.name}`);
 
     gridItems.forEach(gridItem => {
       const x = parseInt(gridItem.dataset.x);
@@ -63,13 +63,28 @@ const UI = () => {
     });
   };
 
+  const renderSunkShip = (player) => {
+    const ships = player.gb.ships;
+    ships.forEach((ship, index) => {
+      if (ship.isSunk()) {
+        const shipCoords = player.gb.shipPositions[index];
+        shipCoords.forEach(coord => {
+          const shipItem = document.querySelector(`.${player.name}[data-x="${coord[0].toString()}"][data-y="${coord[1].toString()}"]`);
+          shipItem.classList.remove('ship');
+          shipItem.classList.remove('hit');
+          shipItem.classList.add('sunk');
+        });
+      }
+    });
+  };
+
   const renderUI = (player, computer) => {
 
     const main = document.createElement('div');
     main.classList.add('main');
 
     const header = renderHeader();
-    const flexContainer = renderFlexContainer()
+    const flexContainer = renderFlexContainer();
     const plGB = renderGB(player);
     const cpGB = renderGB(computer);
     const separator = renderSeparator();
@@ -101,7 +116,7 @@ const UI = () => {
   };
 
 
-  return { renderUI, refreshUI, renderShip };
+  return { renderUI, refreshUI, renderShip, renderSunkShip };
 };
 
 module.exports = UI;

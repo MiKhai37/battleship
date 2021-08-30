@@ -66,6 +66,25 @@ const gameBoard = (size = 10) => {
     shipPositions.push(coords);
   };
 
+  const place = (shipLen, x, y, direction) => {
+    if (!isInRange(shipLen, x, y ,direction)) return 'out of range';
+    if (!isFree(shipLen, x , y, direction)) return 'superposition';
+    const ship1 = ship(shipLen, direction);
+    const coords = [];
+    ships.push(ship1);
+    for (let i = 0; i < shipLen; i++) {
+      if (direction === 'v') {
+        matrix[x][y + i] = 1;
+        coords.push([x, y + i]);
+      } else {
+        matrix[x + i][y] = 1;
+        coords.push([x + i, y]);
+      };
+    };
+    shipPositions.push(coords);
+    return 1;
+  };
+
   const whichShip = (x, y) => {
     for (let i = 0; i < shipPositions.length; i++) {
       for (let j = 0; j < ships[i].length; j++) {
@@ -107,7 +126,7 @@ const gameBoard = (size = 10) => {
     return false;
   }
 
-  return { size, matrix, hitMatrix, whichShip, ships, shipPositions, placeh, placev, receiveAttack, isAllDown }
+  return { size, matrix, hitMatrix, whichShip, ships, shipPositions, placeh, placev, place, receiveAttack, isAllDown }
 }
 
 module.exports = gameBoard;
