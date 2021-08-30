@@ -1,5 +1,4 @@
 const gameBoard = require('./Gameboard');
-const ship = require('./Ship');
 
 test('ship length 4 placement horizontal to x=3, y=4', () => {
   const gb = gameBoard();
@@ -82,7 +81,7 @@ test('which ship is here?', () => {
   expect(gb.whichShip(4, 3)).toBe(0);
   expect(gb.whichShip(5, 4)).toBe(1);
   expect(gb.whichShip(1, 3)).toBe(2);
-  expect(gb.whichShip(4, 4)).toBe('no ship here');
+  expect(gb.whichShip(4, 4)).toBe(-1);
 });
 
 test('receive attack hit', () => {

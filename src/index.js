@@ -1,25 +1,30 @@
 import  './style.css';
-import { ship } from './modules/Ship'
 import Player from './modules/Player';
-import gameBoard from './modules/Gameboard';
+import UI from './modules/UI';
 
-function gameLoop(){
-  const gb1 = gameBoard();
-  const gb2 = gameBoard();
-  const pl1 = Player('Pierre', gb1, gb2);
-  const pl2 = Player('Computer', gb2, gb1);
-  const turn = true;
-  gb1.placeh(3, 2, 2);
-  gb1.placev(4, 3, 3);
-  gb2.placeh(3, 2, 2);
-  gb2.placev(4, 3, 3);
+const pl1 = Player('Roger');
+const pl2 = Player('Computer');
+const ui = UI();
+let turn = true;
 
-  while(!gb1.isAllDown() & !gb2.isAllDown()) {
-    if (turn) {
-      pl1.fireAI();
+
+pl1.gb.placeh(3, 2, 2);
+pl1.gb.placev(4, 3, 3);
+pl2.gb.placeh(3, 2, 2);
+pl2.gb.placev(4, 3, 3);
+
+ui.renderUI(pl1, pl2);
+
+const gridItems = document.querySelectorAll('.grid-item');
+gridItems.forEach(gridItem => {
+  gridItem.addEventListener('click', (e) => {
+    gridItem.classList.add('hit');
+    if (pl1.name === gridItem.dataset.name & turn) {
+      pl1.gb.receiveAttack(gridItem.dataset.x, gridItem.dataset.y);
     } else {
-      pl2.fireAI();
+      pl2.gb.receiveAttack(gridItem.dataset.x, gridItem.dataset.y);
     }
-    turn = !turn
-  }
-}
+    turn = !turn;
+  })
+});
+

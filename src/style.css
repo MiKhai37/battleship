@@ -1,0 +1,46 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  text-align: center;
+}
+
+.footer {
+  text-align: center;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px;
+  grid-auto-columns: 50px;
+  grid-auto-rows: 50px;
+  flex: 1;
+  margin: 100px;
+}
+
+.grid-item {
+  border: 1px solid black;
+}
+
+.hit {
+  background-color: red;
+}
+
+.ship {
+  background-color: blue;
+}
+
+.hit.ship {
+  background-color: violet;
+}
+
+.sunk {
+  background-color: gray;
+}
