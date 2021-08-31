@@ -2,11 +2,15 @@ const gameBoard = require("./Gameboard");
 
 const Player = (name) => {
   const gb = gameBoard()
-  let lastFire = [-1, -1];
+  let score = 0;
+  let last = [-1, -1];
+  let lastHit = '';
 
   const fire = (x, y, enemyGB) => {
     enemyGB.receiveAttack(x, y);
-    lastFire = [x, y];
+    last[0] = x;
+    last[1] = y;
+    return [x, y];
   };
 
   const fireRandom = (enemyGB) => {
@@ -21,22 +25,34 @@ const Player = (name) => {
     };
 
     fire(xRandom, yRandom, enemyGB);
-    lastFire = [xRandom, yRandom];
+    last[0] = xRandom;
+    last[1] = yRandom;
     return [xRandom, yRandom];
   };
 
   const fireSmart = (enemyGB) => {
-    if (lastFire[0] === -1 & lastFire[1] === -1) return fireRandom(enemyGB);
+    let xSmart = -1;
+    let ySmart = -1;
+    let isCorrect = false;
 
-    const smartPosition = [[lastFire[0] + 1, lastFire[1]], [lastFire[0] - 1, lastFire[1]], [lastFire[0], lastFire[1] + 1], [lastFire[0], lastFire[1] - 1]];
+    if (last[0] === -1 & last[1] === -1) return fireRandom(enemyGB);
+
+    const smartPos = [[last[0] + 1, last[1]], [last[0] - 1, last[1]], [last[0], last[1] + 1], [last[0], last[1] - 1]];
     
-    const i = Math.floor(Math.random() * 4);
-    fire(smartPosition[i][0], smartPosition[i][1], enemyGB);
+    const smartPosFilter = smartPos.filter(elem => {
+      elem[0] < 10 | elem[1] > 10;
+    });
 
-    return [smartPosition[i][0], smartPosition[i][1]];
+    const i = Math.floor(Math.random() * smartPosFilter.length);
+    xSmart = smartPosFilter[i][0];
+    ySmart = smartPosFilter[i][1];
+
+    last[0] = xSmart;
+    last[1] = ySmart;
+    return fire(xSmart, ySmart);
   };
 
-  return { name, gb, fire, fireRandom, fireSmart };
+  return { name, score, gb, fire, fireRandom, fireSmart, last };
 };
 
 module.exports = Player;

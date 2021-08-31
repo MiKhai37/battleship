@@ -45,7 +45,22 @@ const UI = () => {
   const renderSeparator = () => {
     const separator = document.createElement('div');
     separator.classList.add('separator');
-
+    const high = document.createElement('div');
+    high.classList.add('high');
+    high.id = 'score-display';
+    const middle = document.createElement('div');
+    middle.classList.add('middle');
+    middle.textContent = 'Select a case to begin';
+    const low = document.createElement('div');
+    low.classList.add('low');
+    const restartBtn = document.createElement('button');
+    restartBtn.classList.add('btn');
+    restartBtn.id = 'restart-btn';
+    restartBtn.textContent = 'Restart';
+    low.appendChild(restartBtn);
+    separator.appendChild(high);
+    separator.appendChild(middle);
+    separator.appendChild(low);
     return separator;
   };
 
@@ -63,6 +78,11 @@ const UI = () => {
     });
   };
 
+  const renderScore = (player, computer) => {
+    const scoreDisplay = document.getElementById('score-display');
+    scoreDisplay.textContent = `Human: ${player.score}, Computer: ${computer.score}`;
+  }
+
   const renderSunkShip = (player) => {
     const ships = player.gb.ships;
     ships.forEach((ship, index) => {
@@ -70,8 +90,6 @@ const UI = () => {
         const shipCoords = player.gb.shipPositions[index];
         shipCoords.forEach(coord => {
           const shipItem = document.querySelector(`.${player.name}[data-x="${coord[0].toString()}"][data-y="${coord[1].toString()}"]`);
-          shipItem.classList.remove('ship');
-          shipItem.classList.remove('hit');
           shipItem.classList.add('sunk');
         });
       }
@@ -88,7 +106,6 @@ const UI = () => {
     const plGB = renderGB(player);
     const cpGB = renderGB(computer);
     const separator = renderSeparator();
-    separator.textContent = 'Player Turn';
 
     flexContainer.appendChild(plGB);
     flexContainer.appendChild(separator);
@@ -103,6 +120,7 @@ const UI = () => {
 
     renderShip(player);
     renderShip(computer);
+    renderScore(player, computer);
 
     return main;
   };
@@ -116,7 +134,7 @@ const UI = () => {
   };
 
 
-  return { renderUI, refreshUI, renderShip, renderSunkShip };
+  return { renderUI, refreshUI, renderShip, renderSunkShip, renderScore };
 };
 
 module.exports = UI;

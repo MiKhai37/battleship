@@ -12,8 +12,8 @@ const gameBoard = (size = 10) => {
     hitMatrix[i] = new Array(size).fill(0);
   };
 
-  const ships = [];
-  const shipPositions = [];
+  let ships = [];
+  let shipPositions = [];
 
   const isInRange = (length, x, y, direction) => {
     if (direction === 'h') {
@@ -114,6 +114,7 @@ const gameBoard = (size = 10) => {
       const hitShipIndex = whichIndex(x, y, shipID);
       hitShip.hit(hitShipIndex);
     };
+    return 'hit';
   };
 
   const isAllDown = () => {
@@ -126,7 +127,18 @@ const gameBoard = (size = 10) => {
     return false;
   }
 
-  return { size, matrix, hitMatrix, whichShip, ships, shipPositions, placeh, placev, place, receiveAttack, isAllDown }
+  const resetGB = () => {
+    for(let i = 0; i < size; i++) {
+      matrix[i] = new Array(size).fill(0);
+    };
+    for(let i = 0; i < size; i++) {
+      hitMatrix[i] = new Array(size).fill(0);
+    };
+    ships.splice(0, ships.length);
+    shipPositions.splice(0, shipPositions.length);
+  };
+
+  return { size, matrix, hitMatrix, whichShip, ships, shipPositions, placeh, placev, place, receiveAttack, isAllDown, resetGB }
 }
 
 module.exports = gameBoard;

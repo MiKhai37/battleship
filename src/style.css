@@ -20,6 +20,9 @@ html, body {
 }
 
 .separator {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   flex: 1;
 }
 
@@ -48,6 +51,6 @@ html, body {
   background-color: violet;
 }
 
-.sunk {
+.hit.ship.sunk {
   background-color: gray;
 }

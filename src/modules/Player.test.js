@@ -63,3 +63,9 @@ test('Random shoot good coords', () => {
   expect(pl1.gb.hitMatrix[x][y]).toBe(1);
 });
 
+test('Smart Fire', () => {
+  const human = Player('Human');
+  const computer = Player('Computer');
+
+});
+
